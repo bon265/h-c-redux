@@ -3,7 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const productSlice=createSlice({
     name:'productlist',
     initialState:{
-        products: []
+        products: [],
+        options:{
+            category: "Tủ gỗ", // mặc định
+        }
     },
     reducers:{
         addProduct:(state,action)=>{
@@ -12,17 +15,14 @@ const productSlice=createSlice({
         removeProduct: (state, action) => {
         state.products=state.products.filter(product => product.id !== action.payload);
         },
-        moistureChecked:(state, action)=>{
-        state = action.payload
-        } ,
-        thicknessOption:(state, action)=>{
-        state = action.payload
-        }
+        setCategory:(state,action)=>{
+        state.options.category=action.payload
+        }    
         
     }
 })
 
 
-export const {addProduct,removeProduct,moistureChecked,thicknessOption}= productSlice.actions
+export const {addProduct,removeProduct,setCategory}= productSlice.actions
 
 export  const productReducer=productSlice.reducer 
