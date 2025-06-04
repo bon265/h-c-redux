@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
-import  Logo from "../assets/logo.jpg"
-
+import Logo from "../assets/Logo.png"
 function Header() {
     return (
         <>
             <nav className="bg-gray-800 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
+      <div className="max-w-7xl mx-auto   px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-20 items-center">
           {/* Logo */}
           <div className="flex items-center space-x-4">
-            <img src="" alt="logo-manh-cuong" className="h-15 w-auto" />
+            <img src={Logo} alt="logo-manh-cuong" className="h-15 w-auto" />
             <h2 className="font-bold text-2xl">Nội Thất Mạnh Cường</h2>
           </div>
 
@@ -19,10 +18,10 @@ function Header() {
               Home
             </Link>
             <Link to="/product-create" className="hover:text-gray-300">
-              Products
+              Products Management
             </Link>
             <Link to="/contact" className="hover:text-gray-300">
-              Contact
+              Contact Management
             </Link>
             <Link to="/new-order" className="hover:text-gray-300">
               customer-order
