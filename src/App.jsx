@@ -1,14 +1,20 @@
-
+import Homepage from "./pages/HOMEPAGE/homepage.jsx";
+import Footer from "./layouts/Footer.jsx";
+import Header from "./layouts/Header.jsx";
+import ProductEdit from "./pages/PRODUCT/ProductEdit.jsx"
 import {Routes, Route} from "react-router-dom";
-import ProductEdit from "./pages/PRODUCT/ProductEdit.jsx";
-import ProductForm from "./pages/PRODUCT/ProductForm";
+import ProductForm from "./pages/PRODUCT/ProductForm.jsx";
 function App() {
   return (
     <>
-      <ProductForm/>
-      <Routes>
-        <Route path="/edit/" element={<ProductEdit />} />
-        </Routes>
+    <Header/>
+            <Routes>
+                
+                <Route path="/"  element={<Homepage/>}/>
+                <Route path="/product-create"  element={<ProductForm/>}/>
+                <Route path="/product-edit"  element={<ProductEdit/>} />
+            </Routes>
+            <Footer/>
     </>
   );
 }

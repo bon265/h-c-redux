@@ -22,7 +22,7 @@ function ProductList() {
                 <p className='text-gray-500 '>Danh mục: {product.category}</p>
                 <div className='flex justify-around mt-2 gap-2'>
                     <button onClick={()=>handleDelete(index)} className='w-1/2 p-2 bg-red-400 text-white rounded-2xl cursor-pointer hover:bg-red-300 hover:scale-102'>delete</button>
-                    <Link to='/edit' className='text-center w-1/2 p-2 bg-blue-400 text-white rounded-2xl cursor-pointer hover:bg-blue-300 hover:scale-102'>
+                    <Link to='/product-edit' className='text-center w-1/2 p-2 bg-blue-400 text-white rounded-2xl cursor-pointer hover:bg-blue-300 hover:scale-102'>
                         <button >edit</button>
                     </Link >
                 </div >
