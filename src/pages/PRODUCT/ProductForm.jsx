@@ -1,7 +1,7 @@
     import { useDispatch,useSelector } from "react-redux";
     import { addProduct,setCategory } from "../../features/productSlice";
     import { useState } from "react";
-
+    import ProductList from "./ProductList";
     function ProductForm() {
     const  [name,setName]=useState('')
     const  [price,setPrice]=useState('')
@@ -110,7 +110,7 @@
         value={categories}
         onChange={(e) => dispatch(setCategory(e.target.value))}
     >
-        <option  value="Tủ gỗ ">Tủ gỗ</option>
+        <option  value="Tủ quần áo ">Tủ quần áo</option>
         <option value="Tủ bếp">Tủ bếp</option>
         <option value="Phòng khách">Phòng khách</option>
         <option value="Tủ rượu">Tủ rượu</option>
@@ -131,21 +131,26 @@
                <div className="ml-50 mt-10 flex items-center gap-5">
                 <h2 >DANH MỤC :</h2>
                     <select className="custom-select w-[300px] text-center  outline-0 bg-blue-200 p-2 rounded-md shadow-blue-600 shadow-inner">
-                        <option className="bg-neutral-100 "> tủ gỗ</option>
+                        <option className="bg-neutral-100 "> tủ quần áo</option>
                         <option className="bg-neutral-100"> phòng khách</option>
                         <option className="bg-neutral-100"> tủ bếp</option>
                         <option className="bg-neutral-100 "> tủ rượu</option>
                     </select>
                </div>
                  {/* in sản phẩm mới thêm */}
-               <table className="w-[1500px] mt-20 mx-auto ">
+              {/* thẻ product */}
+              <ProductList product={products} />
+              {/* bảng table */}
+               {/* <table className="md:w-[1000px] w-[1500px] mt-20 mx-auto ">
                 <thead >
-                    <td className="p-2 border-2 border-amber-500 text-center">Tên Sản Phẩm</td>
-                    <td className="p-2 border-2 text-center  border-amber-500">Giá Thành</td>
-                    <td className="p-2 border-2 text-center  border-amber-500">Mô tả</td>
-                    <td className="p-2 border-2 text-center  border-amber-500">Độ dày ván</td>
-                    <td className="p-2 border-2 text-center  border-amber-500">Chống ẩm</td>
-                    <td className="p-2 border-2 text-center  border-amber-500">danh mục</td>
+                   <tr>
+                     <td className="p-2 border-2 border-amber-500 text-center">Tên Sản Phẩm</td>
+                     <td className="p-2 border-2 text-center  border-amber-500">Giá Thành</td>
+                     <td className="p-2 border-2 text-center  border-amber-500">Mô tả</td>
+                     <td className="p-2 border-2 text-center  border-amber-500">Độ dày ván</td>
+                     <td className="p-2 border-2 text-center  border-amber-500">Chống ẩm</td>
+                     <td className="p-2 border-2 text-center  border-amber-500">danh mục</td>
+                   </tr>
                 </thead>
                 
                 {products.map((item,index)=>{
@@ -161,7 +166,7 @@
                     )
                 })} 
                 
-               </table>
+               </table> */}
             </>
         );
     }

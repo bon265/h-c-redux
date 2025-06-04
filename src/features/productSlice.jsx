@@ -5,7 +5,7 @@ const productSlice=createSlice({
     initialState:{
         products: [],
         options:{
-            category: "Tủ gỗ", // mặc định
+            category: "Tủ quần áo ", // mặc định
         }
     },
     reducers:{
@@ -13,7 +13,7 @@ const productSlice=createSlice({
         state.products.push(action.payload)
         },
         removeProduct: (state, action) => {
-        state.products=state.products.filter(product => product.id !== action.payload);
+        state.products=state.products.filter((product,index) => index !== action.payload);
         },
         setCategory:(state,action)=>{
         state.options.category=action.payload
