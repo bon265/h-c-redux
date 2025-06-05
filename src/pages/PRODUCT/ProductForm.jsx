@@ -4,15 +4,30 @@ import { useState } from "react";
 import ProductList from "./ProductList";
 import { formatPrice } from "../../ultils/formatPrice";
 function ProductForm() {
+  // khai báo state
+  // dùng để quản lí các giá trị nhập vào từ người dùng
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [desc, setDesc] = useState('');
   const [moisture, setMoisture] = useState(false);
   const [thickness, setThickness] = useState('17 mm');
-
+ const [mainImage, setMainImage] = useState(null);
+  const [subImages,setSubImages] =useState([])
+  // xử lí logic redux
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
   const categories = useSelector((state) => state.product.options.category);
+  const handleMainImage = (e) => {
+    e.preventDefault();
+  const file =e.target.files[0] 
+    setMainImage(file); 
+     e.target.reset()
+  }
+  const handleSubImages = (e) => {
+    e.preventDefault();
+  const files = Array.from(e.target.files)
+    setSubImages(files);
+  e.target.reset()}
   const handlePrice = (e) => {
     const formatted = formatPrice(e.target.value);
     setPrice(formatted);
@@ -33,6 +48,8 @@ function ProductForm() {
       thickness,
       moisture,
       category: categories,
+      mainImage: mainImage ? URL.createObjectURL(mainImage) : null,
+      subImages: subImages.length > 0 ? subImages.map(file => URL.createObjectURL(file)) : [],
     };
 
     dispatch(addProduct(newProduct));
@@ -41,6 +58,8 @@ function ProductForm() {
     setDesc('');
     setThickness('17 mm');
     setMoisture(false);
+    setMainImage(null);
+    setSubImages([]);
   };
 
   return (
@@ -133,7 +152,41 @@ function ProductForm() {
               <option value="Khác">Khác</option>
             </select>
           </label>
+          <label  className="text-center flex items-center flex-col justify-center">
+            <p className="font-bold text-green-800 text-center mt-2">Hình ảnh chính</p>
+            <input className="custom-select mt-2 hover:bg-blue-300 bg-blue-200 p-2 text-center" 
+            type="file" 
+            accept="image/*"
+             
+             onChange={handleMainImage}/>
+            {mainImage && (
+  <img className='object-cover object-center mt-5 h-45 rounded-2xl' src={URL.createObjectURL(mainImage)}  />
+)}
+          </label>
+          <label className="text-center flex items-center flex-col justify-center"> 
+            <p className="font-bold text-green-800 text-center mt-2">Hình ảnh phụ</p>
+            <input 
+            className="custom-select mt-2 hover:bg-blue-300 bg-blue-200 p-2 " 
+            type="file" 
+            accept="image/*"
+            multiple
+            
+            onChange={handleSubImages}/>
+            {subImages && subImages.length > 0 && (
+              <figure className="mt-5 flex gap-2 overflow-auto">
+                {subImages.map((file, index) => (
+                  <img
+                    key={index}
+                    className='object-cover object-center h-45 rounded-2xl'
+                    src={URL.createObjectURL(file)}
+                    alt={`Sub Image ${index + 1}`}
+                  />
+                ))}
+              </figure>
+            )}
+          </label>
         </div>
+        
       </form>
 
       <button

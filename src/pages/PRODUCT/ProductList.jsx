@@ -15,7 +15,7 @@ function ProductList() {
         <section className=' grid grid-cols-4 gap-4 p-4 w-[1000px] mx-auto mt-20'>
        { products.map((product, index) => (
             <div   key={index} className='bg-neutral-100 shadow-green-500  rounded-lg p-4 hover:shadow-md transition-shadow duration-300'>
-                <img src={pic1}  alt={product.name} className='w-full h-48 object-cover rounded-t-lg' />
+                <img src={product.mainImage}  alt={product.name} className='w-full h-48 object-cover rounded-t-lg' />
                 <h2 className=' line-clamp-2 leading-tight min-h-[3.5rem] text-xl font-semibold mt-2'>{product.name}</h2>
                 <p className='line-clamp-2 min-h-10 text-gray-600 '>{product.desc}</p>
                 <p className='text-blue-500 font-bold  mt-2'>Giá: {product.price.replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VNĐ</p>
