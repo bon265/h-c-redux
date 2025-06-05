@@ -1,11 +1,12 @@
 
-import pic1 from '../../assets/test.jpg';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeProduct } from '../../features/productSlice';
 import { Link } from 'react-router-dom';
 function ProductList() {
     const dispatch=useDispatch()
-    const products=useSelector (state=> state.product.products)
+    const products=useSelector (state=> state.product.filteredProducts);
+    
+    
     if (!products ||products.length === 0) return <p className='text-center mt-10 text-2xl '>Chưa có sản phẩm nào</p>;
     const handleDelete=(index)=>{
         
