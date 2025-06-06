@@ -162,6 +162,16 @@ function ProductForm() {
               <option value="Khác">Khác</option>
             </select>
           </label>
+          <label className="text-center">
+          <p className="font-bold text-green-800">Nhãn hiệu ván</p> 
+          <select 
+              className="custom-select mt-3 border border-gray-300 p-2 rounded w-[200px] text-center outline-green-900"
+          >
+            <option value="">Ba Thanh</option>
+            <option value="">An Cường</option>
+            <option value="">Khác</option>
+          </select>
+          </label>
           <label  className="text-center flex items-center flex-col justify-center">
             <p className="font-bold text-green-800 text-center mt-2">Hình ảnh chính</p>
             <input className="custom-select mt-2 hover:bg-blue-300 bg-blue-200 p-2 text-center" 

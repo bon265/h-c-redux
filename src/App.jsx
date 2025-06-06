@@ -4,6 +4,7 @@ import Header from "./layouts/Header.jsx";
 import ProductEdit from "./pages/PRODUCT/ProductEdit.jsx"
 import {Routes, Route} from "react-router-dom";
 import ProductForm from "./pages/PRODUCT/ProductForm.jsx";
+import DesignForm from "./pages/DESIGNS/DesignPage.jsx";
 function App() {
   return (
     <>
@@ -13,6 +14,8 @@ function App() {
                 <Route path="/"  element={<Homepage/>}/>
                 <Route path="/product-create"  element={<ProductForm/>}/>
                 <Route path="/product-edit/:id"  element={<ProductEdit/>} />
+                <Route path="/design-create"  element={<DesignForm/>} />
+               
             </Routes>
             <Footer/>
     </>

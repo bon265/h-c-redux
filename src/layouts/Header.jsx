@@ -3,13 +3,13 @@ import Logo from "../assets/Logo.png"
 function Header() {
     return (
         <>
-            <nav className="bg-gray-800 text-white">
-      <div className="max-w-7xl mx-auto   px-4 sm:px-6 lg:px-8">
+            <nav className="bg-gray-800 text-white md:text-sm lg:text-lg">
+      <div className="max-w-[1900px] mx-auto   px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Logo */}
           <div className="flex items-center space-x-4">
             <img src={Logo} alt="logo-manh-cuong" className="h-15 w-auto" />
-            <h2 className="font-bold text-2xl">Nội Thất Mạnh Cường</h2>
+            <h2 className="font-bold text-2xl  md:text-sm lg:text-xl ">Nội Thất Mạnh Cường</h2>
           </div>
 
           {/* Menu links */}
@@ -25,6 +25,9 @@ function Header() {
             </Link>
             <Link to="/new-order" className="hover:text-gray-300">
               customer-order
+            </Link>
+            <Link to="/design-create" className="hover:text-gray-300">
+              Design-management
             </Link>
           </div>
         </div>
