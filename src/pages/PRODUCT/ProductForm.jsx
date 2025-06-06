@@ -110,7 +110,7 @@ function ProductForm() {
             <label>
               <p className='text-shadow-2xs text-blue-500'>Nhập mô tả:</p>
               <textarea
-                className='outline-0 bg-blue-100 p-2 focus:bg-blue-200 transition-all w-full mt-3'
+                className='h-40 outline-0 bg-blue-100 p-2 focus:bg-blue-200 transition-all w-full mt-3'
                 placeholder='enter the description'
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
@@ -158,6 +158,7 @@ function ProductForm() {
               <option value="Tủ bếp">Tủ bếp</option>
               <option value="Phòng khách">Phòng khách</option>
               <option value="Tủ rượu">Tủ rượu</option>
+              <option value="Giường ngủ">Giường ngủ</option>
               <option value="Khác">Khác</option>
             </select>
           </label>
@@ -181,7 +182,7 @@ function ProductForm() {
             
             onChange={handleSubImages}/>
             {subImages && subImages.length > 0 && (
-              <figure className="mt-5 flex gap-2 overflow-auto">
+              <figure className="mt-5 flex gap-2 overflow-auto h-50">
                 {subImages.map((file, index) => (
                   <img
                     key={index}
@@ -214,6 +215,7 @@ function ProductForm() {
           <option>Phòng khách</option>
           <option>Tủ bếp</option>
           <option>Tủ rượu</option>
+          <option>Giường ngủ</option>
           <option>tất cả</option>
         </select>
       </div>
