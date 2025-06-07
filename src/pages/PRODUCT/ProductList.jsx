@@ -1,6 +1,6 @@
 
 import { useSelector, useDispatch } from 'react-redux';
-import { removeProduct } from '../../features/productSlice';
+import { removeProduct } from '../../features/PRODUCT/productSlice';
 import { Link } from 'react-router-dom';
 function ProductList() {
     const dispatch=useDispatch()

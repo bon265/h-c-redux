@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct,applyFilter,setFilterCategory,setCategory } from "../../features/productSlice";
+import { addProduct,applyFilter,setFilterCategory,setCategory,setBrand} from "../../features/PRODUCT/productSlice";
 import { useState } from "react";
 import ProductList from "./ProductList";
 import { formatPrice } from "../../ultils/formatPrice";
@@ -13,12 +13,15 @@ function ProductForm() {
   const [thickness, setThickness] = useState('17 mm');
   const [mainImage, setMainImage] = useState(null);
   const [subImages,setSubImages] =useState([])
-
+  
   // xử lí logic redux
   const dispatch = useDispatch();
+  // lấy dữ liệu từ redux store
   const products = useSelector((state) => state.product.products);
   const filter =useSelector((state) => state.product.filterCategory);
   const category = useSelector((state) => state.product.options.category);
+  const brand = useSelector((state) => state.product.options.brand);
+  // hàm định dạng giá
   const handleMainImage = (e) => {
     e.preventDefault();
   const file =e.target.files[0] 
@@ -58,6 +61,7 @@ function ProductForm() {
       category: category,
       mainImage: mainImage ? URL.createObjectURL(mainImage) : null,
       subImages: subImages.length > 0 ? subImages.map(file => URL.createObjectURL(file)) : [],
+      brand: brand,
     };
 
     dispatch(addProduct(newProduct));
@@ -68,7 +72,7 @@ function ProductForm() {
     setMoisture(false);
     setMainImage(null);
     setSubImages([]);
-    console.log(newProduct)
+    
   };
 
   return (
@@ -165,11 +169,13 @@ function ProductForm() {
           <label className="text-center">
           <p className="font-bold text-green-800">Nhãn hiệu ván</p> 
           <select 
+          value={brand}
+          onChange={e => dispatch(setBrand(e.target.value))}
               className="custom-select mt-3 border border-gray-300 p-2 rounded w-[200px] text-center outline-green-900"
           >
-            <option value="">Ba Thanh</option>
-            <option value="">An Cường</option>
-            <option value="">Khác</option>
+            <option value="Ba Thanh">Ba Thanh</option>
+            <option value="An Cường">An Cường</option>
+            <option value="Khác">Khác</option>
           </select>
           </label>
           <label  className="text-center flex items-center flex-col justify-center">
@@ -192,7 +198,7 @@ function ProductForm() {
             
             onChange={handleSubImages}/>
             {subImages && subImages.length > 0 && (
-              <figure className="mt-5 flex gap-2 overflow-auto h-50">
+              <figure className="mt-5 flex gap-2 overflow-auto w-80">
                 {subImages.map((file, index) => (
                   <img
                     key={index}
