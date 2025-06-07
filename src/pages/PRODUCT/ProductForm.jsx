@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct,applyFilter,setFilterCategory,setCategory,setBrand} from "../../features/PRODUCT/productSlice";
+import { addProduct,applyFilter,setCategory,setBrand} from "../../features/PRODUCT/productSlice";
 import { useState } from "react";
 import ProductList from "./ProductList";
 import { formatPrice } from "../../ultils/formatPrice";
@@ -13,12 +13,11 @@ function ProductForm() {
   const [thickness, setThickness] = useState('17 mm');
   const [mainImage, setMainImage] = useState(null);
   const [subImages,setSubImages] =useState([])
-  
+  const [filter, setFilter] = useState('tất cả');
   // xử lí logic redux
   const dispatch = useDispatch();
   // lấy dữ liệu từ redux store
   const products = useSelector((state) => state.product.products);
-  const filter =useSelector((state) => state.product.filterCategory);
   const category = useSelector((state) => state.product.options.category);
   const brand = useSelector((state) => state.product.options.brand);
   // hàm định dạng giá
@@ -32,16 +31,16 @@ function ProductForm() {
     e.preventDefault();
   const files = Array.from(e.target.files)
     setSubImages(files);
-  e.target.reset()}
+    e.target.reset()}
   const handlePrice = (e) => {
     const formatted = formatPrice(e.target.value);
     setPrice(formatted);
   };
   // ham filter
   const handleFilter = (e) => {
-    const selectedCategory = e.target.value;
-    dispatch(setFilterCategory(selectedCategory));
-    dispatch(applyFilter());
+    setFilter(e.target.value);
+    dispatch(applyFilter(e.target.value));
+    console.log( e.target.value);
   }
 // hàm subbmit
   const handleSubmit = (e) => {
@@ -65,6 +64,7 @@ function ProductForm() {
     };
 
     dispatch(addProduct(newProduct));
+    dispatch(applyFilter(filter)); // áp dụng filter theo category đã chọn
     setName('');
     setPrice('');
     setDesc('');
@@ -72,7 +72,7 @@ function ProductForm() {
     setMoisture(false);
     setMainImage(null);
     setSubImages([]);
-    
+    console.log(mainImage);
   };
 
   return (

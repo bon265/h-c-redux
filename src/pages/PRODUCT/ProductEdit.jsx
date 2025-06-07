@@ -1,13 +1,14 @@
 
         import { formatPrice } from '../../ultils/formatPrice'; 
+        import { useNavigate } from 'react-router-dom';
         import { useParams } from 'react-router-dom';
         import { useSelector,useDispatch } from 'react-redux';
         import { selectProductById } from '../../features/PRODUCT/productSelector.jsx';
-        import { setCategory,setBrand } from '../../features/PRODUCT/productSlice.jsx';
-        import {  useState } from 'react';
+        import { setCategory,setBrand,updateProduct } from '../../features/PRODUCT/productSlice.jsx';
+        import { useState } from 'react';
         function ProductEdit() {
             // sử dụng useSelector để lấy dữ liệu từ redux store
-
+            const navigate = useNavigate();
             const dispatch = useDispatch();
             // dùng useSelector để lấy dữ liệu từ redux store
             const {id} = useParams(); // lấy id từ url
@@ -20,7 +21,22 @@
             const [price, setPrice] = useState(productDetail.price? productDetail.price : '0');
             const [discount, setDiscount] = useState('');
             const [thickness, setThickness] = useState(productDetail.thickness? productDetail.thickness : '17 mm');
-             
+            const [mainImage, setMainImage] = useState(productDetail.mainImage? productDetail.mainImage : null);
+            const [subImages, setSubImages] = useState(productDetail.subImages? productDetail.subImages : []);
+            // const [moisture, setMoisture] = useState(productDetail.moisture? productDetail.moisture : false);
+            //    hàm định dạng ảnh chính
+            const handleMainImage = (e) => {
+                e.preventDefault();
+            const file = e.target.files[0];
+                setMainImage(file);
+                e.target.value = null; // reset input file
+                }
+                // hàm định dạng ảnh phụ
+            const handleSubImages = (e) => {
+                e.preventDefault();
+            const files = Array.from(e.target.files);
+                setSubImages((prev) => [...prev, ...files]);
+                }
             // hàm định dạng discount
             const handleDiscount = (e) => {
                 const formatted= formatPrice(e.target.value);
@@ -35,7 +51,7 @@
                 setPrice(formatted);
             };
             // hàm submit
-            const handleSubmit = (e) => {
+            const  handleSubmit = (e) => {
                 e.preventDefault();
                 if (name.trim() === '' || price.trim() === '' || desc.trim() === '') {
                     return;
@@ -52,13 +68,22 @@
                     moisture: productDetail.moisture,
                     category: category,
                     brand: brand,
-                    mainImage: productDetail.mainImage,
-                    subImages: productDetail.subImages,
+                    mainImage: mainImage instanceof File ? URL.createObjectURL(mainImage) : mainImage,
+                    subImages: subImages.map((img) =>
+                    img instanceof File ? URL.createObjectURL(img) : img
+                ),  
                 };
-            }
-            console.log(brand);
+            //    dispatch(updateProduct({ id, updatedProduct }));
+                dispatch(updateProduct({id:id,updatedProduct}))
+                navigate('/product-create'); // chuyển hướng về trang danh sách sản phẩm
             
+               
+            }
+            if (!productDetail) {
+         return <p className="text-center text-red-500 mt-20">Không tìm thấy sản phẩm với ID này.</p>;
+            }
             return (
+                
                 <div className='w-'>
                 <h1 className=' text-center text-blue-600  mt-20'> TRANG CHỈNH SỬA SẢN PHẨM</h1> 
                
@@ -70,17 +95,35 @@
                 <section className='flex gap-5 items-center '>
                     {/* ảnh chính */}
                     <div>
-                        <input className=' text-md  bg-blue-50 hover:bg-blue-100  p-2 rounded-md' accept='image/*' type="file" />
+                        <input className=' text-md  bg-blue-50 hover:bg-blue-100  p-2 rounded-md' 
+                        accept='image/*' 
+                        onChange={handleMainImage}
+                        type="file" />
                         <figure className='overflow-hidden p-2 border border-blue-500 rounded-lg mt-3 '>
-                            <img className='w-auto h-100 rounded-lg object-center object-cover' src={productDetail.mainImage} alt="" />
+           <img
+                 className='w-auto h-100 rounded-lg object-center object-cover'
+                src={mainImage ? URL.createObjectURL(mainImage) : productDetail.mainImage}
+                alt="main-img"
+/>
+
                             
                             </figure>
                         </div>
                     {/* khối ảnh phụ */}
                     <div>
-                    <input className='rounded-md text-md bg-blue-50 hover:bg-blue-100 p-2' accept='image/*' type="file" />
+                    <input className='rounded-md text-md bg-blue-50 hover:bg-blue-100 p-2' accept='image/*' type="file"
+                    onChange={handleSubImages}
+                    multiple
+                    />
                         <figure className='mt-3 rounded-md flex flex-col gap-5 overflow-scroll overflow-y overflow-x-hidden auto h-[500px]'>
-                       {productDetail.subImages.map((image, index) => (<img key={index} className='w-[200px] h-[200px] object-cover rounded-lg' src={image} alt={`Sub Image ${index + 1}`} />))}
+                      {subImages.map((image, index) => (
+  <img
+    key={index}
+    className='w-[200px] h-[200px] object-cover rounded-lg'
+    src={image instanceof File ? URL.createObjectURL(image) : image}
+    alt={`Sub Image ${index + 1}`}
+  />
+))}
                         </figure>
                     </div>
                 </section >
