@@ -53,7 +53,7 @@ function ProductForm() {
 
     const newProduct = {
       name,
-      price: rawPrice,
+      price: rawPrice, // chuyển đổi về số  
       desc,
       thickness,
       moisture,
@@ -72,7 +72,7 @@ function ProductForm() {
     setMoisture(false);
     setMainImage(null);
     setSubImages([]);
-    console.log(mainImage);
+    
   };
 
   return (

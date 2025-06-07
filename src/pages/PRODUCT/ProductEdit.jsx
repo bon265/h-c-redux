@@ -2,6 +2,7 @@
         import { formatPrice } from '../../ultils/formatPrice'; 
         import { useNavigate } from 'react-router-dom';
         import { useParams } from 'react-router-dom';
+       
         import { useSelector,useDispatch } from 'react-redux';
         import { selectProductById } from '../../features/PRODUCT/productSelector.jsx';
         import { setCategory,setBrand,updateProduct } from '../../features/PRODUCT/productSlice.jsx';
@@ -27,16 +28,40 @@
             //    hàm định dạng ảnh chính
             const handleMainImage = (e) => {
                 e.preventDefault();
-            const file = e.target.files[0];
-                setMainImage(file);
-                e.target.value = null; // reset input file
+                const file = e.target.files[0];
+                if (!file) return; // nếu không có file thì không làm gì cả
+                // kiểm tra định dạng file
+            const previewURL=URL.createObjectURL(file);
+            if (!file.type.startsWith('image/')) {
+                    alert('Vui lòng chọn một tệp hình ảnh hợp lệ.');
+                    return;
+                }
+                setMainImage(previewURL);
+                console.log( previewURL )
                 }
                 // hàm định dạng ảnh phụ
-            const handleSubImages = (e) => {
-                e.preventDefault();
-            const files = Array.from(e.target.files);
-                setSubImages((prev) => [...prev, ...files]);
-                }
+          const handleSubImages = (e) => {
+  e.preventDefault();
+  const files = Array.from(e.target.files);
+  if (files.length === 0) return; // nếu không có file thì không làm gì cả
+
+  const validImages = [];
+
+  // kiểm tra định dạng file
+  files.forEach((item) => {
+    if (!item.type.startsWith('image/')) {
+      alert('Vui lòng chọn một tệp hình ảnh hợp lệ.');
+      return;
+    }
+    const previewURL = URL.createObjectURL(item);
+    validImages.push(previewURL);
+  });
+
+  // thêm các ảnh mới vào mảng subImages
+  setSubImages(validImages);
+  console.log(validImages);
+};
+
             // hàm định dạng discount
             const handleDiscount = (e) => {
                 const formatted= formatPrice(e.target.value);
@@ -61,14 +86,14 @@
                 const updatedProduct = {
                     id: id,
                     name,
-                    price: rawPrice,
+                    price: rawPrice || 0, // nếu không có giá thì mặc định là 0
                     desc,
-                    discount: rawDiscount,
+                    discount: rawDiscount || 0, // nếu không có discount thì mặc định là 0
                     thickness,
                     moisture: productDetail.moisture,
                     category: category,
                     brand: brand,
-                    mainImage: mainImage instanceof File ? URL.createObjectURL(mainImage) : mainImage,
+                    mainImage: mainImage,
                     subImages: subImages.map((img) =>
                     img instanceof File ? URL.createObjectURL(img) : img
                 ),  
@@ -76,8 +101,7 @@
             //    dispatch(updateProduct({ id, updatedProduct }));
                 dispatch(updateProduct({id:id,updatedProduct}))
                 navigate('/product-create'); // chuyển hướng về trang danh sách sản phẩm
-            
-               
+            console.log('Sản phẩm đã được cập nhật:', updatedProduct);
             }
             if (!productDetail) {
          return <p className="text-center text-red-500 mt-20">Không tìm thấy sản phẩm với ID này.</p>;
@@ -102,7 +126,7 @@
                         <figure className='overflow-hidden p-2 border border-blue-500 rounded-lg mt-3 '>
            <img
                  className='w-auto h-100 rounded-lg object-center object-cover'
-                src={mainImage ? URL.createObjectURL(mainImage) : productDetail.mainImage}
+                src={mainImage }
                 alt="main-img"
 />
 
@@ -111,7 +135,9 @@
                         </div>
                     {/* khối ảnh phụ */}
                     <div>
-                    <input className='rounded-md text-md bg-blue-50 hover:bg-blue-100 p-2' accept='image/*' type="file"
+                    <input className='rounded-md text-md bg-blue-50 hover:bg-blue-100 p-2' 
+                    accept='image/*'
+                     type="file"
                     onChange={handleSubImages}
                     multiple
                     />
@@ -120,7 +146,7 @@
   <img
     key={index}
     className='w-[200px] h-[200px] object-cover rounded-lg'
-    src={image instanceof File ? URL.createObjectURL(image) : image}
+    src={image  }
     alt={`Sub Image ${index + 1}`}
   />
 ))}

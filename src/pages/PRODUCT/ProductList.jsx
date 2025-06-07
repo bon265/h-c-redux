@@ -1,22 +1,41 @@
 
 import { useSelector, useDispatch } from 'react-redux';
 import { removeProduct } from '../../features/PRODUCT/productSlice';
+
 import { Link } from 'react-router-dom';
 function ProductList() {
     const dispatch=useDispatch()
     const products=useSelector (state=> state.product.filteredProducts);
-    
-    
+    // hàm xử lí price nếu có discount
+    const outputPrice = (price, discount = 0) => {
+    const newPrice = price - (price * discount / 100);
+    return newPrice.toLocaleString('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+};
+
+    // nếu không có sản phẩm nào thì hiển thị thông báo
     if (!products ||products.length === 0) return <p className='text-center mt-10 text-2xl '>Chưa có sản phẩm nào</p>;
 
+        
     return (
-        <section className=' grid grid-cols-4 gap-4 p-4 w-[1000px] mx-auto mt-20'>
+        <section className=' grid grid-cols-4 gap-4 p-4 w-[1100px] mx-auto mt-20'>
        { products.map((product) => (
             <div   key={product.id} className='bg-neutral-100 shadow-green-500  rounded-lg p-4 hover:shadow-md transition-shadow duration-300'>
                 <img src={product.mainImage}  alt={product.name} className='w-full h-48 object-cover rounded-t-lg' />
                 <h2 className=' line-clamp-2 leading-tight min-h-[3.5rem] text-xl font-semibold mt-2'>{product.name}</h2>
                 <p className='line-clamp-2 min-h-10 text-gray-600 '>{product.desc}</p>
-                <p className='text-blue-500 font-bold  mt-2'>Giá: {product.price.replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VNĐ</p>
+                {!product.discount && (
+                    <p className='line-clamp-3 leading-tight min-h-[3.5rem] mt-2 text-gray-500 font-bold'>Giá: {outputPrice(product.price,0)} VNĐ </p>)}
+                { product.discount && product.discount > 0 && (
+                   <>
+                   <p className='text-gray-400  font-bold line-through'>Giá gốc: {outputPrice(product.price,0)} VNĐ </p>
+                   <p className='text-green-500 font-bold '>Giá mới: {outputPrice(product.price, product.discount)} VNĐ </p>
+                   <p className=' font-bold text-xl text-red-400 italic'>sale: {product.discount} % </p>
+                   </> 
+                    
+                )}
                 <p className='text-gray-500 '>Danh mục: {product.category}</p>
                 <div className='flex justify-around mt-2 gap-2'>
                     <button onClick={()=>{dispatch(removeProduct(product.id))}} className='w-1/2 p-2 bg-red-400 text-white rounded-2xl cursor-pointer hover:bg-red-300 hover:scale-102'>delete</button>
